@@ -66,11 +66,6 @@ int main() {
             std::cin >> brand;
             std::cout << "Введите модель: ";
             std::cin >> model;
-
-            std::cout << "Введите города доставки (через пробел): ";
-            std::string deliveryCity;
-            }
-
             std::cout << "Введите объем перевозимого груза: ";
             std::cin >> cargoVolume;
 
