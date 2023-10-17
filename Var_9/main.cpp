@@ -1,3 +1,4 @@
+#include <iostream>
 #include <string>
 #include "Airplane.h"
 #include "Train.h"
@@ -30,7 +31,7 @@ int main() {
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cout << "Введите габариты: ";
             std::getline(std::cin, dimensions);
-            std::cout << "Введите города: ";
+            std::cout << "Введите города (через запятую без пробелов): ";
             std::getline(std::cin, cities);
 
             keeper.addTransport(new Airplane(type, name, cargoVolume, dimensions, cities));
@@ -57,8 +58,7 @@ int main() {
         case 3: {
             int year;
             std::string brand, model, deliveryCities;
-            std::vector<int> deliveryTimes;
-            double cargoVolume;
+            std::vector<int> deliveryTimes(0);
 
             std::cout << "Введите год выпуска автомобиля: ";
             std::cin >> year;
@@ -66,6 +66,12 @@ int main() {
             std::cin >> brand;
             std::cout << "Введите модель: ";
             std::cin >> model;
+
+            std::cout << "Введите города доставки (через запятую без пробелов): ";
+            std::cin.ignore();
+            std::getline(std::cin, deliveryCities);
+
+            double cargoVolume;
             std::cout << "Введите объем перевозимого груза: ";
             std::cin >> cargoVolume;
 
@@ -94,7 +100,41 @@ int main() {
             std::string filename;
             std::cout << "Введите имя файла для загрузки: ";
             std::cin >> filename;
-            keeper.loadFromFile(filename);
+
+            std::ifstream file(filename, std::ios::binary);
+            if (file.is_open()) {
+                while (!file.eof()) {
+                    std::string type;
+                    file >> type;
+
+                    Transport* transport = nullptr;
+
+                    if (type == "A") {
+                        transport = new Airplane();
+                    }
+                    else if (type == "T") {
+                        transport = new Train();
+                    }
+                    else if (type == "C") {
+                        transport = new Car();
+                    }
+                    else {
+                        std::cerr << "Неверный формат данных в файле.\n";
+                        break;
+                    }
+
+                    if (transport) {
+                        transport->deserialize(file);
+                        keeper.addTransport(transport);
+                    }
+                }
+                file.close();
+                std::cout << "Данные загружены из файла: " << filename << "\n";
+            }
+            else {
+                std::cerr << "Не получилось открыть файл для чтения.\n";
+            }
+
             break;
         }
         }

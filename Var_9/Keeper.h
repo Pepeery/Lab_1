@@ -1,7 +1,10 @@
+#ifndef KEEPER_H
+#define KEEPER_H
+
+#include "Transport.h"
+#include <vector>
 #include <iostream>
 #include <fstream>
-#include <vector>
-#include "Transport.h"
 
 class Keeper {
 public:
@@ -17,3 +20,5 @@ public:
 private:
     std::vector<Transport*> transports;
 };
+
+#endif

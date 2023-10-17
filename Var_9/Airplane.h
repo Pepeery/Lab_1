@@ -1,3 +1,6 @@
+#ifndef AIRPLANE_H
+#define AIRPLANE_H
+
 #include "Transport.h"
 
 class Airplane : public Transport {
@@ -16,3 +19,5 @@ private:
     std::string dimensions;
     std::string cities;
 };
+
+#endif

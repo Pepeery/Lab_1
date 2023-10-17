@@ -1,3 +1,4 @@
+#include <string>
 #include "Airplane.h"
 
 Airplane::Airplane() : cargoVolume(0.0) {
@@ -18,5 +19,8 @@ void Airplane::serialize(std::ostream& os) const {
 }
 
 void Airplane::deserialize(std::istream& is) {
-    is >> type >> name >> cargoVolume >> dimensions >> cities;
+    is >> type >> name >> cargoVolume;
+
+    std::getline(is >> std::ws, dimensions, ',');
+    std::getline(is >> std::ws, cities, '\n');
 }

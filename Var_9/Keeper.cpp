@@ -48,3 +48,37 @@ void Keeper::saveToFile(const std::string& filename) {
         std::cerr << "Не получилось открыть файл для записи.\n";
     }
 }
+
+void Keeper::loadFromFile(const std::string& filename) {
+    std::ifstream file(filename, std::ios::binary);
+    if (file.is_open()) {
+        while (!file.eof()) {
+            std::string type;
+            file >> type;
+
+            Transport* transport = nullptr;
+
+            if (type == "A") {
+                transport = new Airplane();
+            }
+            else if (type == "T") {
+                transport = new Train();
+            }
+            else if (type == "C") {
+                transport = new Car();
+            }
+            else {
+            }
+
+            if (transport) {
+                transport->deserialize(file);
+                addTransport(transport);
+            }
+        }
+        file.close();
+        std::cout << "Данные загружены из файла: " << filename << "\n";
+    }
+    else {
+        std::cerr << "Не получилось открыть файл для чтения.\n";
+    }
+}
